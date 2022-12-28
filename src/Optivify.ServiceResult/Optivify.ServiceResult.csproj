@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+		<Company>Optivify</Company>
+		<RepositoryUrl>https://github.com/Optivify/ServiceResult</RepositoryUrl>
+		<AssemblyVersion></AssemblyVersion>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Description>A result object contains value and status of an operation which can be returned from services.</Description>
+		<PackageProjectUrl>https://github.com/Optivify/ServiceResult</PackageProjectUrl>
+		<Authors>Optivify</Authors>
+		<Version>1.0.2</Version>
+		<PackageTags>optivify service result pattern</PackageTags>
+	</PropertyGroup>
+
+</Project>
