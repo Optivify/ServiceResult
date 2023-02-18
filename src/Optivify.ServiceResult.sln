@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.ServiceResult.AspN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.ServiceResult.Tests", "Tests\Optivify.ServiceResult.Tests\Optivify.ServiceResult.Tests.csproj", "{479D282B-8331-4E59-A005-EFD847DFAED9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optivify.ServiceResult.Sample", "Optivify.ServiceResult.Sample\Optivify.ServiceResult.Sample.csproj", "{F790ACF9-F96C-4A8E-90C3-587DA393C02D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{479D282B-8331-4E59-A005-EFD847DFAED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{479D282B-8331-4E59-A005-EFD847DFAED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{479D282B-8331-4E59-A005-EFD847DFAED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F790ACF9-F96C-4A8E-90C3-587DA393C02D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F790ACF9-F96C-4A8E-90C3-587DA393C02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F790ACF9-F96C-4A8E-90C3-587DA393C02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F790ACF9-F96C-4A8E-90C3-587DA393C02D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
