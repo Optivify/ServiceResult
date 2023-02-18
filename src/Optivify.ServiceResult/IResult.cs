@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace Optivify.ServiceResult
+﻿namespace Optivify.ServiceResult
 {
     public interface IResult
     {
         ResultStatus Status { get; set; }
 
-        IEnumerable<string> ErrorMessages { get; }
+        string? SuccessMessage { get; }
 
-        List<ValidationError> ValidationErrors { get; }
+        IEnumerable<string>? ErrorMessages { get; }
 
-        object GetValue();
+        List<ValidationError>? ValidationErrors { get; }
+
+        object? GetValue();
     }
 }

@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Optivify.ServiceResult
+﻿namespace Optivify.ServiceResult
 {
     public class Result<TValue> : IResult
     {
-        public bool IsSuccess => this.Status == ResultStatus.Success;
+        public bool IsSuccess => Status == ResultStatus.Success;
 
-        public bool IsSucessWithValue => this.Status == ResultStatus.Success && this.Value != null;
+        public bool IsSuccessWithValue => Status == ResultStatus.Success && Value != null;
 
-        public bool IsError => !this.IsSuccess;
+        public bool IsFailure => !IsSuccess;
 
         public ResultStatus Status { get; set; }
 
@@ -19,9 +16,9 @@ namespace Optivify.ServiceResult
 
         public List<ValidationError> ValidationErrors { get; set; } = new List<ValidationError>();
 
-        public TValue Value { get; protected set; }
+        public TValue? Value { get; protected set; }
 
-        public static implicit operator TValue(Result<TValue> result) => result.Value;
+        public static implicit operator TValue?(Result<TValue> result) => result.Value;
 
         public static implicit operator Result<TValue>(TValue value) => new Result<TValue>(value);
 
@@ -29,32 +26,39 @@ namespace Optivify.ServiceResult
         {
             Status = result.Status,
             SuccessMessage = result.SuccessMessage,
+            ErrorMessages = result.ErrorMessages,
+            ValidationErrors = result.ValidationErrors
         };
 
         public Result(ResultStatus status)
         {
-            this.Status = status;
+            Status = status;
         }
 
-        public Result(TValue value)
+        public Result(TValue? value)
         {
-            this.Value = value;
+            Value = value;
         }
 
         public Result(ResultStatus status, TValue value)
         {
-            this.Status = status;
-            this.Value = value;
+            Status = status;
+            Value = value;
         }
 
-        public object GetValue()
+        public object? GetValue()
         {
-            return this.Value;
+            return Value;
         }
 
         #region Success
 
         public static Result<TValue> Success(TValue value)
+        {
+            return new Result<TValue>(ResultStatus.Success, value);
+        }
+
+        public static Result<TValue> Success<TValue>(TValue value)
         {
             return new Result<TValue>(ResultStatus.Success, value);
         }
@@ -84,17 +88,24 @@ namespace Optivify.ServiceResult
 
         public static Result<TValue> Invalid(params string[] errorMessages)
         {
-            return new Result<TValue>(ResultStatus.Invalid)
+            return new Result(ResultStatus.Invalid)
             {
                 ErrorMessages = errorMessages
             };
         }
 
-        public static Result<TValue> Invalid(List<ValidationError> validationErrors, params string[] errorMessages)
+        public static Result<TValue> Invalid(params ValidationError[] validationErrors)
+        {
+            return new Result(ResultStatus.Invalid)
+            {
+                ValidationErrors = validationErrors.ToList()
+            };
+        }
+
+        public static Result<TValue> Invalid(List<ValidationError> validationErrors)
         {
             return new Result<TValue>(ResultStatus.Invalid)
             {
-                ErrorMessages = errorMessages,
                 ValidationErrors = validationErrors
             };
         }
@@ -177,14 +188,24 @@ namespace Optivify.ServiceResult
 
         public static new Result Invalid(params string[] errorMessages)
         {
-            return new Result(ResultStatus.Invalid) { ErrorMessages = errorMessages };
+            return new Result(ResultStatus.Invalid)
+            {
+                ErrorMessages = errorMessages
+            };
         }
 
-        public static new Result Invalid(List<ValidationError> validationErrors, params string[] errorMessages)
+        public static new Result Invalid(params ValidationError[] validationErrors)
         {
             return new Result(ResultStatus.Invalid)
             {
-                ErrorMessages = errorMessages,
+                ValidationErrors = validationErrors.ToList()
+            };
+        }
+
+        public static new Result Invalid(List<ValidationError> validationErrors)
+        {
+            return new Result(ResultStatus.Invalid)
+            {
                 ValidationErrors = validationErrors
             };
         }

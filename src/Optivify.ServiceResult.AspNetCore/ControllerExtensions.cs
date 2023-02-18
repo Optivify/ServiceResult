@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 
 namespace Optivify.ServiceResult.AspNetCore
 {
@@ -8,79 +6,77 @@ namespace Optivify.ServiceResult.AspNetCore
     {
         public static ActionResult ToActionResult(this ControllerBase controller, IResult result)
         {
+            var resultApiModel = result.ToApiModel();
+
             switch (result.Status)
             {
-                case ResultStatus.Success: return Success(controller, result);
-                case ResultStatus.Error: return Error(controller, result);
-                case ResultStatus.Invalid: return BadRequest(controller, result);
-                case ResultStatus.NotFound: return NotFound(controller, result);
-                case ResultStatus.Unauthorized: return Unauthorized(controller, result);
-                case ResultStatus.Forbidden: return Forbidden(controller);
+                // Success
+                case ResultStatus.Success:
+                    resultApiModel.Message = result.SuccessMessage;
+
+                    return Ok(controller, resultApiModel);
+
+                // Error
+                case ResultStatus.Error:
+                    resultApiModel.Message = result.CombineErrorMessages();
+
+                    return UnprocessableEntity(controller, resultApiModel);
+
+                // Invalid
+                case ResultStatus.Invalid:
+                    resultApiModel.Message = result.ValidationErrors?.FirstOrDefault()?.ErrorMessage ?? result.CombineErrorMessages();
+
+                    return BadRequest(controller, resultApiModel);
+
+                // NotFound
+                case ResultStatus.NotFound:
+                    resultApiModel.Message = result.CombineErrorMessages();
+
+                    return NotFound(controller, resultApiModel);
+
+                // Unauthorized
+                case ResultStatus.Unauthorized:
+                    resultApiModel.Message = result.CombineErrorMessages();
+
+                    return Unauthorized(controller, resultApiModel);
+
+                // Forbidden
+                case ResultStatus.Forbidden:
+                    return Forbidden(controller);
+
                 default:
-                    throw new NotSupportedException($"Result status is not supported.");
+                    throw new NotSupportedException($"The result status {result.Status} is not supported.");
             }
         }
 
-        private static ActionResult Success(ControllerBase controller, IResult result)
+        private static ActionResult Ok(ControllerBase controller, ResultApiModel resultApiModel)
         {
-            if (typeof(Result).IsInstanceOfType(result))
-            {
-                return controller.Ok();
-            }
-
-            return controller.Ok(result.GetValue());
+            return controller.Ok(resultApiModel);
         }
 
-        private static ActionResult Error(ControllerBase controller, IResult result)
+        private static ActionResult BadRequest(ControllerBase controller, ResultApiModel resultApiModel)
         {
-            return controller.UnprocessableEntity(new ProblemDetails
-            {
-                Title = "Something went wrong.",
-                Detail = result.CombineErrorMessages()
-            });
+            return controller.BadRequest(resultApiModel);
         }
 
-        private static ActionResult BadRequest(ControllerBase controller, IResult result)
+        private static ActionResult NotFound(ControllerBase controller, ResultApiModel resultApiModel)
         {
-            foreach (var validationError in result.ValidationErrors)
-            {
-                controller.ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
-            }
-
-            return controller.BadRequest(controller.ModelState);
+            return controller.NotFound(resultApiModel);
         }
 
-        private static ActionResult NotFound(ControllerBase controller, IResult result)
+        private static ActionResult Unauthorized(ControllerBase controller, ResultApiModel resultApiModel)
         {
-            if (result.ErrorMessages.Any())
-            {
-                return controller.NotFound(new ProblemDetails
-                {
-                    Title = "Resource not found.",
-                    Detail = result.CombineErrorMessages()
-                });
-            }
-
-            return controller.NotFound();
-        }
-
-        private static ActionResult Unauthorized(ControllerBase controller, IResult result)
-        {
-            if (result.ErrorMessages.Any())
-            {
-                return controller.Unauthorized(new ProblemDetails
-                {
-                    Title = "Unauthorized.",
-                    Detail = result.CombineErrorMessages()
-                });
-            }
-
-            return controller.Unauthorized();
+            return controller.Unauthorized(resultApiModel);
         }
 
         private static ActionResult Forbidden(ControllerBase controller)
         {
             return controller.Forbid();
+        }
+
+        private static ActionResult UnprocessableEntity(ControllerBase controller, ResultApiModel resultApiModel)
+        {
+            return controller.UnprocessableEntity(resultApiModel);
         }
     }
 }

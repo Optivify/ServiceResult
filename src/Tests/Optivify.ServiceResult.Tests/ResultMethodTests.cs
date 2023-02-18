@@ -88,6 +88,20 @@ namespace Optivify.ServiceResult.Tests
             Assert.IsNull(result.Value);
         }
 
+        [TestMethod]
+        public void VerifyInvalidMethod_GivenErrorMessage_ReturnCorrectStatusAndErrorMessage()
+        {
+            const string message1 = "The name field is required.";
+            const string message2 = "Invalid date format.";
+            var result = Result<TestClass>.Invalid(message1, message2);
+            var errorMessages = result.ErrorMessages.ToArray();
+
+            Assert.AreEqual(ResultStatus.Invalid, result.Status);
+            Assert.AreEqual(message1, errorMessages[0]);
+            Assert.AreEqual(message2, errorMessages[1]);
+            Assert.IsNull(result.Value);
+        }
+
         #endregion
 
         #region Unauthorized
