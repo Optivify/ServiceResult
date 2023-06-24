@@ -1,35 +1,52 @@
-namespace Optivify.ServiceResult.Tests
+namespace Optivify.ServiceResult.Tests;
+
+[TestClass]
+public class ResultImplicitOperatorTests
 {
-    [TestClass]
-    public class ResultImplicitOperatorTests
+    private class TestClass
     {
-        private class TestClass
+    }
+
+    public Result<T?> PerformExample<T>(T? testValue) => testValue;
+
+    public T? GetValueExample<T>(Result<T?> testResult) => testResult;
+
+    [TestMethod]
+    public void VerifyImplicitOperator_GivenResult_ReturnCorrectValue_Success()
+    {
+        var obj = new TestClass();
+        var result = Result.Success(obj);
+        var castedObj = this.GetValueExample(result);
+
+        Assert.AreEqual(ResultStatus.Success, result.Status);
+        Assert.AreEqual(obj, castedObj);
+    }
+
+    [TestMethod]
+    public void VerifyImplicitOperator_GivenResult_ReturnCorrectValue_Invalid()
+    {
+        var result = Result.Invalid(new ValidationError
         {
-        }
+            PropertyName = "property",
+            ErrorMessage = "error",
+            ErrorCode = "code",
+            Severity = ValidationSeverity.Info
+        });
 
-        public Result<T> PerformExample<T>(T testValue) => testValue;
+        Assert.AreEqual(ResultStatus.Invalid, result.Status, "ResultStatus");
+        Assert.AreEqual("property", result.ValidationErrors[0].PropertyName);
+        Assert.AreEqual("error", result.ValidationErrors[0].PropertyName);
+        Assert.AreEqual("code", result.ValidationErrors[0].ErrorCode);
+        Assert.AreEqual(ValidationSeverity.Info, result.ValidationErrors[0].Severity);
+    }
 
-        public T? GetValueExample<T>(Result<T> testResult) => testResult;
+    [TestMethod]
+    public void VerifyImplicitOperator_GivenValue_ReturnCorrectResult()
+    {
+        var obj = new TestClass();
+        var result = this.PerformExample(obj);
 
-        [TestMethod]
-        public void VerifyImplicitOperator_GivenResult_ReturnCorrectValue()
-        {
-            var obj = new TestClass();
-            var result =  Result.Success(obj);
-            var castedObj = this.GetValueExample(result);
-
-            Assert.AreEqual(ResultStatus.Success, (ResultStatus)result.Status);
-            Assert.AreEqual(obj, castedObj);
-        }
-
-        [TestMethod]
-        public void VerifyImplicitOperator_GivenValue_ReturnCorrectResult()
-        {
-            var obj = new TestClass();
-            var result = this.PerformExample(obj);
-
-            Assert.AreEqual(ResultStatus.Success, result.Status);
-            Assert.AreEqual(obj, result.Value);
-        }
+        Assert.AreEqual(ResultStatus.Success, result.Status);
+        Assert.AreEqual(obj, result.Value);
     }
 }

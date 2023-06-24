@@ -1,35 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
-namespace Optivify.ServiceResult.AspNetCore
+namespace Optivify.ServiceResult;
+
+public static class ResultExtensions
 {
-    public static class ResultExtensions
+    public static string CombineErrorMessages(this IResult result)
     {
-        public static string CombineErrorMessages(this IResult result)
-        {
-            var sb = new StringBuilder();
+        var sb = new StringBuilder();
 
-            foreach (var error in result.ErrorMessages)
+        foreach (var error in result.ErrorMessages)
+        {
+            sb.AppendLine(error);
+
+            if (!error.EndsWith("."))
             {
-                sb.AppendLine(error);
-
-                if (!error.EndsWith("."))
-                {
-                    sb.Append('.');
-                }
+                sb.Append('.');
             }
-
-            return sb.ToString();
         }
 
-        public static ActionResult ToActionResult<T>(this Result<T> result, ControllerBase controller)
-        {
-            return controller.ToActionResult(result);
-        }
+        return sb.ToString();
+    }
 
-        public static ActionResult ToActionResult(this Result result, ControllerBase controller)
-        {
-            return controller.ToActionResult(result);
-        }
+    public static IActionResult ToActionResult<T>(this Result<T> result, ControllerBase controller)
+    {
+        return controller.ToActionResult(result);
+    }
+
+    public static IActionResult ToActionResult(this Result result, ControllerBase controller)
+    {
+        return controller.ToActionResult(result);
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<Company>Optivify</Company>
 		<Description>An extension that helps to convert Result to ActionResult.</Description>
 		<Copyright></Copyright>
@@ -11,16 +11,20 @@
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Optivify</Authors>
-		<Version>1.0.3</Version>
+		<Version>1.2.2</Version>
 		<BaseOutputPath></BaseOutputPath>
 		<PackageTags>optivify result pattern asp net core</PackageTags>
 	</PropertyGroup>
-	
-	<ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '3.0')) ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), '3.0'))) Or&#xD;&#xA;                ('$(TargetFrameworkIdentifier)' == '.NETStandard') ">
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <ProjectReference Include="..\Optivify.ServiceResult\Optivify.ServiceResult.csproj" />
+		<ProjectReference Include="..\Optivify.ServiceResult\Optivify.ServiceResult.csproj" />
 	</ItemGroup>
 </Project>
