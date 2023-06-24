@@ -6,7 +6,7 @@ public class Result<TValue> : IResult
 
     public bool IsSuccessWithValue => this.Status == ResultStatus.Success && this.Value != null;
 
-    public bool IsError => !this.IsSuccess;
+    public bool IsFailure => !this.IsSuccess;
 
     public ResultStatus Status { get; set; }
 
