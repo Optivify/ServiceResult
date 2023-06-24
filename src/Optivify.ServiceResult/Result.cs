@@ -81,19 +81,19 @@ public class Result<TValue> : IResult
 
     #region Invalid
 
-    public static Result<TValue> Invalid(params string[] errorMessages)
-    {
-        return new Result<TValue>(ResultStatus.Invalid)
-        {
-            ErrorMessages = errorMessages
-        };
-    }
-
     public static Result<TValue> Invalid(params ValidationError[] validationErrors)
     {
         return new Result<TValue>(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
+        };
+    }
+
+    public static Result<TValue> Invalid(params string[] errorMessages)
+    {
+        return new Result<TValue>(ResultStatus.Invalid)
+        {
+            ErrorMessages = errorMessages
         };
     }
 
@@ -178,17 +178,17 @@ public class Result : Result<object>
 
     #region Invalid
 
-    public static new Result Invalid(params string[] errorMessages)
-    {
-        return new Result(ResultStatus.Invalid) { ErrorMessages = errorMessages };
-    }
-
     public static new Result Invalid(params ValidationError[] validationErrors)
     {
         return new Result(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
         };
+    }
+
+    public static new Result Invalid(params string[] errorMessages)
+    {
+        return new Result(ResultStatus.Invalid) { ErrorMessages = errorMessages };
     }
 
     #endregion
