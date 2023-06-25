@@ -2,7 +2,15 @@
 
 public interface IResult
 {
-    ResultStatus Status { get; set; }
+    bool IsSuccess { get; }
+
+    public bool IsSuccessWithValue { get; }
+
+    public bool IsFailure { get; }
+
+    ResultStatus Status { get; }
+
+    string SuccessMessage { get; }
 
     IEnumerable<string> ErrorMessages { get; }
 
