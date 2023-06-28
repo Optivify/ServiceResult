@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
 		<Company>Optivify</Company>
 		<Description>An extension that helps to convert Result to ActionResult.</Description>
 		<Copyright></Copyright>

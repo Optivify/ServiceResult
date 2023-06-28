@@ -14,12 +14,12 @@ public class ConvertResultToActionResultAttribute : ActionFilterAttribute
             return;
         }
 
-        if (!(objectResult.Value is IResult result))
+        if (objectResult.Value is not IResult result)
         {
             return;
         }
 
-        if (!(context.Controller is ControllerBase controller))
+        if (context.Controller is not ControllerBase controller)
         {
             return;
         }

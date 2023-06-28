@@ -53,14 +53,14 @@ public class Result<TValue> : IResult
 
     #region Success
 
-    public static Result<TValue> Success(TValue value)
+    public static Result<TValue> Success(TValue? value)
     {
-        return new Result<TValue>(ResultStatus.Success, value);
+        return new Result<TValue>(ResultStatus.Success) { Value = value };
     }
 
-    public static Result<TValue> Success(TValue value, string successMessage)
+    public static Result<TValue> Success(TValue? value, string successMessage)
     {
-        return new Result<TValue>(ResultStatus.Success, value) { SuccessMessage = successMessage };
+        return new Result<TValue>(ResultStatus.Success) { Value = value, SuccessMessage = successMessage };
     }
 
     public static Result<TValue> SuccessWithMessage(string successMessage)
@@ -89,11 +89,11 @@ public class Result<TValue> : IResult
         };
     }
 
-    public static Result<TValue> Invalid(params string[] errorMessages)
+    public static Result<TValue> Invalid(IEnumerable<ValidationError> validationErrors)
     {
         return new Result<TValue>(ResultStatus.Invalid)
         {
-            ErrorMessages = errorMessages
+            ValidationErrors = validationErrors.ToList()
         };
     }
 
@@ -160,9 +160,9 @@ public class Result : Result<object>
         return new Result(ResultStatus.Success) { SuccessMessage = successMessage };
     }
 
-    public static Result<TValue> Success<TValue>(TValue value)
+    public static Result<TValue?> Success<TValue>(TValue? value)
     {
-        return new Result<TValue>(value);
+        return new Result<TValue?>(value);
     }
 
     #endregion
@@ -186,9 +186,12 @@ public class Result : Result<object>
         };
     }
 
-    public static new Result Invalid(params string[] errorMessages)
+    public static new Result Invalid(IEnumerable<ValidationError> validationErrors)
     {
-        return new Result(ResultStatus.Invalid) { ErrorMessages = errorMessages };
+        return new Result(ResultStatus.Invalid)
+        {
+            ValidationErrors = validationErrors.ToList()
+        };
     }
 
     #endregion

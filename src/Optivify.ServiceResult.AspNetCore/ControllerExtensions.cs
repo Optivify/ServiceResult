@@ -44,7 +44,9 @@ public static class ControllerExtensions
     {
         foreach (var validationError in result.ValidationErrors)
         {
-            controller.ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
+            controller.ModelState.AddModelError(
+                validationError.PropertyName ?? string.Empty, 
+                validationError.ErrorMessage ?? string.Empty);
         }
 
         return controller.BadRequest(controller.ModelState);
