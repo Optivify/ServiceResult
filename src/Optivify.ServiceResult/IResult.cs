@@ -4,8 +4,6 @@ public interface IResult
 {
     bool IsSuccess { get; }
 
-    public bool IsSuccessWithValue { get; }
-
     public bool IsFailure { get; }
 
     ResultStatus Status { get; }

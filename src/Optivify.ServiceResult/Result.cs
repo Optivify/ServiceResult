@@ -1,20 +1,18 @@
 ﻿namespace Optivify.ServiceResult;
 
-public class Result<TValue> : IResult
+public record Result<TValue> : IResult
 {
     public bool IsSuccess => this.Status == ResultStatus.Success;
 
-    public bool IsSuccessWithValue => this.Status == ResultStatus.Success && this.Value != null;
-
     public bool IsFailure => !this.IsSuccess;
 
-    public ResultStatus Status { get; set; }
+    public ResultStatus Status { get; init; }
 
-    public string SuccessMessage { get; set; } = string.Empty;
+    public string SuccessMessage { get; init; } = string.Empty;
 
-    public IEnumerable<string> ErrorMessages { get; set; } = Enumerable.Empty<string>();
+    public IEnumerable<string> ErrorMessages { get; init; } = Enumerable.Empty<string>();
 
-    public List<ValidationError> ValidationErrors { get; set; } = new List<ValidationError>();
+    public List<ValidationError> ValidationErrors { get; init; } = new List<ValidationError>();
 
     public TValue? Value { get; protected set; }
 
@@ -142,7 +140,7 @@ public class Result<TValue> : IResult
     #endregion
 }
 
-public class Result : Result<object>
+public record Result : Result<object>
 {
     public Result(ResultStatus status) : base(status)
     {
