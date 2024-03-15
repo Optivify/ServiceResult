@@ -69,12 +69,12 @@ public class ResultMethodTests
     {
         var validationErrors = new List<ValidationError>
         {
-            new ValidationError
+            new()
             {
                 PropertyName = nameof(TestClass.Name),
                 ErrorMessage = "Name is required."
             },
-            new ValidationError
+            new()
             {
                 PropertyName = nameof(TestClass.Age),
                 ErrorMessage = "Age must be greater than 13."

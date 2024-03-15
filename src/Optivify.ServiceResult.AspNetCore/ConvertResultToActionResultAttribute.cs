@@ -9,12 +9,7 @@ public class ConvertResultToActionResultAttribute : ActionFilterAttribute
     {
         var objectResult = context.Result as ObjectResult;
 
-        if (objectResult == null || objectResult.Value == null)
-        {
-            return;
-        }
-
-        if (objectResult.Value is not IResult result)
+        if (objectResult?.Value is not IResult result)
         {
             return;
         }

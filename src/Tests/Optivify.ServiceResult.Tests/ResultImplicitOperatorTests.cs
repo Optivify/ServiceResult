@@ -16,10 +16,10 @@ public class ResultImplicitOperatorTests
     {
         var obj = new TestClass();
         var result = Result.Success(obj);
-        var castedObj = this.GetValueExample(result!);
+        var castObj = this.GetValueExample(result);
 
         Assert.AreEqual(ResultStatus.Success, result.Status);
-        Assert.AreEqual(obj, castedObj);
+        Assert.AreEqual(obj, castObj);
     }
 
     [TestMethod]

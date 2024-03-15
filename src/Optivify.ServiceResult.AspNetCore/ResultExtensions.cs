@@ -22,13 +22,9 @@ public static class ResultExtensions
         return sb.ToString();
     }
 
-    public static IActionResult ToActionResult<T>(this Result<T> result, ControllerBase controller)
-    {
-        return controller.ToActionResult(result);
-    }
+    public static IActionResult ToActionResult<T>(this Result<T> result, ControllerBase controller) => 
+        controller.ToActionResult(result);
 
-    public static IActionResult ToActionResult(this Result result, ControllerBase controller)
-    {
-        return controller.ToActionResult(result);
-    }
+    public static IActionResult ToActionResult(this Result result, ControllerBase controller) => 
+        controller.ToActionResult(result);
 }

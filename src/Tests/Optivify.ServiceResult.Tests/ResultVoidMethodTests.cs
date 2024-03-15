@@ -15,7 +15,7 @@ public class ResultVoidMethodTests
         var obj = new TestClass();
         var result = Result.Success(obj);
 
-        Assert.AreEqual(ResultStatus.Success, (ResultStatus)result.Status);
+        Assert.AreEqual(ResultStatus.Success, result.Status);
         Assert.AreEqual(obj, result.Value);
     }
 
@@ -26,7 +26,7 @@ public class ResultVoidMethodTests
         var successMessage = "Done!";
         var result = Result.Success(obj, successMessage);
 
-        Assert.AreEqual(ResultStatus.Success, (ResultStatus)result.Status);
+        Assert.AreEqual(ResultStatus.Success, result.Status);
         Assert.AreEqual(obj, result.Value);
         Assert.AreEqual(successMessage, result.SuccessMessage);
     }
@@ -66,12 +66,12 @@ public class ResultVoidMethodTests
     {
         var validationErrors = new List<ValidationError>
         {
-            new ValidationError
+            new()
             {
                 PropertyName = "Name",
                 ErrorMessage = "Name is required."
             },
-            new ValidationError
+            new()
             {
                 PropertyName = "Age",
                 ErrorMessage = "Age must be greater than 13."

@@ -14,7 +14,7 @@ public class Result<TValue> : IResult
 
     public IEnumerable<string> ErrorMessages { get; set; } = Enumerable.Empty<string>();
 
-    public List<ValidationError> ValidationErrors { get; set; } = new List<ValidationError>();
+    public List<ValidationError> ValidationErrors { get; set; } = new();
 
     public TValue? Value { get; protected set; }
 
@@ -48,98 +48,61 @@ public class Result<TValue> : IResult
         this.Value = value;
     }
 
-    public object? GetValue()
-    {
-        return this.Value;
-    }
+    public object? GetValue() => this.Value;
 
     #region Success
 
-    public static Result<TValue> Success(TValue? value)
-    {
-        return new Result<TValue>(ResultStatus.Success) { Value = value };
-    }
+    public static Result<TValue> Success(TValue? value) => new(ResultStatus.Success) { Value = value };
 
-    public static Result<TValue> Success(TValue? value, string successMessage)
-    {
-        return new Result<TValue>(ResultStatus.Success) { Value = value, SuccessMessage = successMessage };
-    }
+    public static Result<TValue> Success(TValue? value, string successMessage) => new(ResultStatus.Success) { Value = value, SuccessMessage = successMessage };
 
-    public static Result<TValue> SuccessWithMessage(string successMessage)
-    {
-        return new Result<TValue>(ResultStatus.Success) { SuccessMessage = successMessage };
-    }
+    public static Result<TValue> SuccessWithMessage(string successMessage) => new(ResultStatus.Success) { SuccessMessage = successMessage };
 
     #endregion
 
     #region Error
 
-    public static Result<TValue> Error(params string[] errorMessages)
-    {
-        return new Result<TValue>(ResultStatus.Error) { ErrorMessages = errorMessages };
-    }
+    public static Result<TValue> Error(params string[] errorMessages) => new(ResultStatus.Error) { ErrorMessages = errorMessages };
 
     #endregion
 
     #region Invalid
 
-    public static Result<TValue> Invalid(params ValidationError[] validationErrors)
-    {
-        return new Result<TValue>(ResultStatus.Invalid)
+    public static Result<TValue> Invalid(params ValidationError[] validationErrors) =>
+        new(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
         };
-    }
 
-    public static Result<TValue> Invalid(IEnumerable<ValidationError> validationErrors)
-    {
-        return new Result<TValue>(ResultStatus.Invalid)
+    public static Result<TValue> Invalid(IEnumerable<ValidationError> validationErrors) =>
+        new(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
         };
-    }
 
     #endregion
 
     #region Unauthorized
 
-    public static Result<TValue> Unauthorized()
-    {
-        return new Result<TValue>(ResultStatus.Unauthorized);
-    }
+    public static Result<TValue> Unauthorized() => new(ResultStatus.Unauthorized);
 
-    public static Result<TValue> Unauthorized(params string[] errorMessages)
-    {
-        return new Result<TValue>(ResultStatus.Unauthorized) { ErrorMessages = errorMessages };
-    }
+    public static Result<TValue> Unauthorized(params string[] errorMessages) => new(ResultStatus.Unauthorized) { ErrorMessages = errorMessages };
 
     #endregion
 
     #region Forbidden
 
-    public static Result<TValue> Forbidden()
-    {
-        return new Result<TValue>(ResultStatus.Forbidden);
-    }
+    public static Result<TValue> Forbidden() => new(ResultStatus.Forbidden);
 
-    public static Result<TValue> Forbidden(params string[] errorMessages)
-    {
-        return new Result<TValue>(ResultStatus.Forbidden) { ErrorMessages = errorMessages };
-    }
+    public static Result<TValue> Forbidden(params string[] errorMessages) => new(ResultStatus.Forbidden) { ErrorMessages = errorMessages };
 
     #endregion
 
     #region Not Found
 
-    public static Result<TValue> NotFound()
-    {
-        return new Result<TValue>(ResultStatus.NotFound);
-    }
+    public static Result<TValue> NotFound() => new(ResultStatus.NotFound);
 
-    public static Result<TValue> NotFound(params string[] errorMessages)
-    {
-        return new Result<TValue>(ResultStatus.NotFound) { ErrorMessages = errorMessages };
-    }
+    public static Result<TValue> NotFound(params string[] errorMessages) => new(ResultStatus.NotFound) { ErrorMessages = errorMessages };
 
     #endregion
 }
@@ -152,91 +115,57 @@ public class Result : Result<object>
 
     #region Success
 
-    public static Result Success()
-    {
-        return new Result(ResultStatus.Success);
-    }
+    public static Result Success() => new(ResultStatus.Success);
 
-    public static new Result SuccessWithMessage(string successMessage)
-    {
-        return new Result(ResultStatus.Success) { SuccessMessage = successMessage };
-    }
+    public new static Result SuccessWithMessage(string successMessage) => new(ResultStatus.Success) { SuccessMessage = successMessage };
 
-    public static Result<TValue?> Success<TValue>(TValue? value)
-    {
-        return new Result<TValue?>(value);
-    }
+    public static Result<TValue?> Success<TValue>(TValue? value) => new(value);
 
     #endregion
 
     #region Error
 
-    public static new Result Error(params string[] errorMessages)
-    {
-        return new Result(ResultStatus.Error) { ErrorMessages = errorMessages };
-    }
+    public new static Result Error(params string[] errorMessages) => new(ResultStatus.Error) { ErrorMessages = errorMessages };
 
     #endregion
 
     #region Invalid
 
-    public static new Result Invalid(params ValidationError[] validationErrors)
-    {
-        return new Result(ResultStatus.Invalid)
+    public new static Result Invalid(params ValidationError[] validationErrors) =>
+        new(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
         };
-    }
 
-    public static new Result Invalid(IEnumerable<ValidationError> validationErrors)
-    {
-        return new Result(ResultStatus.Invalid)
+    public new static Result Invalid(IEnumerable<ValidationError> validationErrors) =>
+        new(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
         };
-    }
 
     #endregion
 
     #region Unauthorized
 
-    public static new Result Unauthorized()
-    {
-        return new Result(ResultStatus.Unauthorized);
-    }
+    public new static Result Unauthorized() => new(ResultStatus.Unauthorized);
 
-    public static new Result Unauthorized(params string[] errorMessages)
-    {
-        return new Result(ResultStatus.Unauthorized) { ErrorMessages = errorMessages };
-    }
+    public new static Result Unauthorized(params string[] errorMessages) => new(ResultStatus.Unauthorized) { ErrorMessages = errorMessages };
 
     #endregion
 
     #region Forbidden
 
-    public static new Result Forbidden()
-    {
-        return new Result(ResultStatus.Forbidden);
-    }
+    public new static Result Forbidden() => new(ResultStatus.Forbidden);
 
-    public static new Result Forbidden(params string[] errorMessages)
-    {
-        return new Result(ResultStatus.Forbidden) { ErrorMessages = errorMessages };
-    }
+    public new static Result Forbidden(params string[] errorMessages) => new(ResultStatus.Forbidden) { ErrorMessages = errorMessages };
 
     #endregion
 
     #region Not Found
 
-    public static new Result NotFound()
-    {
-        return new Result(ResultStatus.NotFound);
-    }
+    public new static Result NotFound() => new(ResultStatus.NotFound);
 
-    public static new Result NotFound(params string[] errorMessages)
-    {
-        return new Result(ResultStatus.NotFound) { ErrorMessages = errorMessages };
-    }
+    public new static Result NotFound(params string[] errorMessages) => new(ResultStatus.NotFound) { ErrorMessages = errorMessages };
 
     #endregion
 }
