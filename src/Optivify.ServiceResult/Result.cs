@@ -18,6 +18,8 @@ public class Result<TValue> : IResult
 
     public TValue? Value { get; protected set; }
 
+    public TValue? Data => Value;
+
     public static implicit operator TValue?(Result<TValue?> result) => result.Value;
 
     public static implicit operator Result<TValue?>(TValue? value) => new(value);
