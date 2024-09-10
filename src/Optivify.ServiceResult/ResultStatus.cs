@@ -7,5 +7,5 @@ public enum ResultStatus
     Invalid,            // BadRequest - HttpStatusCode 400
     Unauthorized,       // Unauthorized - HttpStatusCode 401
     Forbidden,          // Forbidden - HttpStatusCode 403
-    NotFound,           // NotFound - HttpStatusCode 404
+    NotFound            // NotFound - HttpStatusCode 404
 }

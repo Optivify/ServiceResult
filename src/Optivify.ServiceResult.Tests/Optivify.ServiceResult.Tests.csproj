@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Optivify.ServiceResult\Optivify.ServiceResult.csproj" />
+    <ProjectReference Include="..\Optivify.ServiceResult\Optivify.ServiceResult.csproj" />
   </ItemGroup>
 
 </Project>

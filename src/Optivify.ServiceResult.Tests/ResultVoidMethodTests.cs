@@ -1,48 +1,34 @@
 namespace Optivify.ServiceResult.Tests;
 
 [TestClass]
-public class ResultMethodTests
+public class ResultVoidMethodTests
 {
     private class TestClass
     {
-        public string? Name { get; set; }
-
-        public int Age { get; set; }
     }
 
     #region Success
 
     [TestMethod]
-    public void VerifySuccessMethod_GivenObject_ReturnCorrectStatusAndValue()
+    public void VerifySuccessMethod_GivenObject_ReturnCorrectValue()
     {
         var obj = new TestClass();
-        var result = Result<TestClass>.Success(obj);
+        var result = Result.Success(obj);
 
         Assert.AreEqual(ResultStatus.Success, result.Status);
         Assert.AreEqual(obj, result.Value);
     }
 
     [TestMethod]
-    public void VerifySuccessMethod_GivenValueAndSuccessMessage_ReturnCorrectStatusAndValueAndSuccessMessage()
+    public void VerifySuccessMethod_GivenValueAndSuccessMessage_ReturnCorrectValueAndMessage()
     {
+        const string successMessage = "Done!";
         var obj = new TestClass();
-        var successMessage = "Done successfully!";
-        var result = Result<TestClass>.Success(obj, successMessage);
+        var result = Result.Success(obj, successMessage);
 
         Assert.AreEqual(ResultStatus.Success, result.Status);
         Assert.AreEqual(obj, result.Value);
         Assert.AreEqual(successMessage, result.SuccessMessage);
-    }
-
-    [TestMethod]
-    public void VerifySuccessWithMessageMethod_GivenSuccessMessage_ReturnCorrectStatusAndSuccessMessage()
-    {
-        var successMessage = "Done successfully!";
-        var result = Result<TestClass>.SuccessWithMessage(successMessage);
-
-        Assert.AreEqual(ResultStatus.Success, result.Status);
-        Assert.AreEqual(successMessage, result.SuccessMessage);
-        Assert.IsNull(result.Value);
     }
 
     #endregion
@@ -53,7 +39,7 @@ public class ResultMethodTests
     public void VerifyErrorMethod_GivenErrorMessages_ReturnCorrectStatusAndErrorMessages()
     {
         var errorMessages = new[] { "Error message 1", "Error message 2" };
-        var result = Result<TestClass>.Error(errorMessages);
+        var result = Result.Error(errorMessages);
 
         Assert.AreEqual(ResultStatus.Error, result.Status);
         Assert.AreEqual(errorMessages, result.ErrorMessages);
@@ -71,18 +57,19 @@ public class ResultMethodTests
         {
             new()
             {
-                PropertyName = nameof(TestClass.Name),
+                PropertyName = "Name",
                 ErrorMessage = "Name is required."
             },
             new()
             {
-                PropertyName = nameof(TestClass.Age),
+                PropertyName = "Age",
                 ErrorMessage = "Age must be greater than 13."
             }
         };
 
-        var result = Result<TestClass>.Invalid(validationErrors.ToArray());
+        var result = Result.Invalid(validationErrors.ToArray());
 
+        Assert.IsNotNull(result.ValidationErrors);
         Assert.AreEqual(ResultStatus.Invalid, result.Status);
         Assert.AreEqual(validationErrors[0], result.ValidationErrors[0]);
         Assert.AreEqual(validationErrors[1], result.ValidationErrors[1]);
@@ -96,7 +83,7 @@ public class ResultMethodTests
     [TestMethod]
     public void VerifyUnauthorizedMethod_GivenNothing_ReturnCorrectStatus()
     {
-        var result = Result<TestClass>.Unauthorized();
+        var result = Result.Unauthorized();
 
         Assert.AreEqual(ResultStatus.Unauthorized, result.Status);
         Assert.IsNull(result.Value);
@@ -106,7 +93,7 @@ public class ResultMethodTests
     public void VerifyUnauthorizedMethod_GivenErrorMessage_ReturnCorrectStatusAndErrorMessages()
     {
         var errorMessages = new[] { "Error message 1", "Error message 2", "Error message 3" };
-        var result = Result<TestClass>.Unauthorized(errorMessages);
+        var result = Result.Unauthorized(errorMessages);
 
         Assert.AreEqual(ResultStatus.Unauthorized, result.Status);
         Assert.AreEqual(errorMessages, result.ErrorMessages);
@@ -120,7 +107,7 @@ public class ResultMethodTests
     [TestMethod]
     public void VerifyForbiddenMethod_GivenNothing_ReturnCorrectStatus()
     {
-        var result = Result<TestClass>.Forbidden();
+        var result = Result.Forbidden();
 
         Assert.AreEqual(ResultStatus.Forbidden, result.Status);
         Assert.IsNull(result.Value);
@@ -130,7 +117,7 @@ public class ResultMethodTests
     public void VerifyForbiddenMethod_GivenErrorMessage_ReturnCorrectStatusAndErrorMessages()
     {
         var errorMessages = new[] { "Error message 1", "Error message 2", "Error message 3" };
-        var result = Result<TestClass>.Unauthorized(errorMessages);
+        var result = Result.Unauthorized(errorMessages);
 
         Assert.AreEqual(ResultStatus.Unauthorized, result.Status);
         Assert.AreEqual(errorMessages, result.ErrorMessages);
@@ -144,7 +131,7 @@ public class ResultMethodTests
     [TestMethod]
     public void VerifyNotFoundMethod_GivenNothing_ReturnCorrectStatus()
     {
-        var result = Result<TestClass>.NotFound();
+        var result = Result.NotFound();
 
         Assert.AreEqual(ResultStatus.NotFound, result.Status);
         Assert.IsNull(result.Value);
@@ -154,7 +141,7 @@ public class ResultMethodTests
     public void VerifyNotFoundMethod_GivenErrorMessage_ReturnCorrectStatusAndErrorMessages()
     {
         var errorMessages = new[] { "Error message 1", "Error message 2", "Error message 3" };
-        var result = Result<TestClass>.NotFound(errorMessages);
+        var result = Result.NotFound(errorMessages);
 
         Assert.AreEqual(ResultStatus.NotFound, result.Status);
         Assert.AreEqual(errorMessages, result.ErrorMessages);

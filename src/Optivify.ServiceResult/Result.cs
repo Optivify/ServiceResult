@@ -1,20 +1,20 @@
 ﻿namespace Optivify.ServiceResult;
 
-public class Result<TValue> : IResult
+public class Result<TValue> : IResult<TValue>
 {
-    public bool IsSuccess => this.Status == ResultStatus.Success;
-
-    public bool IsSuccessWithValue => this.Status == ResultStatus.Success && this.Value != null;
-
-    public bool IsFailure => !this.IsSuccess;
-
     public ResultStatus Status { get; set; }
 
-    public string SuccessMessage { get; set; } = string.Empty;
+    public bool IsSuccess => Status == ResultStatus.Success;
 
-    public IEnumerable<string> ErrorMessages { get; set; } = Enumerable.Empty<string>();
+    public bool IsFailure => !IsSuccess;
 
-    public List<ValidationError> ValidationErrors { get; set; } = new();
+    public string? SuccessMessage { get; set; }
+
+    public string? ErrorMessage => ErrorMessages.JoinStrings();
+
+    public List<ValidationError>? ValidationErrors { get; set; }
+
+    public IEnumerable<string>? ErrorMessages { get; set; }
 
     public TValue? Value { get; protected set; }
 
@@ -29,34 +29,30 @@ public class Result<TValue> : IResult
         Status = result.Status,
         SuccessMessage = result.SuccessMessage,
         ErrorMessages = result.ErrorMessages,
-        ValidationErrors = result.ValidationErrors,
+        ValidationErrors = result.ValidationErrors
     };
 
     public Result(ResultStatus status)
     {
-        this.Status = status;
+        Status = status;
     }
 
     public Result(TValue value)
     {
-        this.Value = value;
+        Value = value;
     }
 
     public Result(ResultStatus status, TValue value)
     {
-        this.Status = status;
-        this.Value = value;
+        Status = status;
+        Value = value;
     }
 
-    public object? GetValue() => this.Value;
+    public object? GetValue() => Value;
 
     #region Success
 
-    public static Result<TValue> Success(TValue? value) => new(ResultStatus.Success) { Value = value };
-
-    public static Result<TValue> Success(TValue? value, string successMessage) => new(ResultStatus.Success) { Value = value, SuccessMessage = successMessage };
-
-    public static Result<TValue> SuccessWithMessage(string successMessage) => new(ResultStatus.Success) { SuccessMessage = successMessage };
+    public static Result<TValue> Success(TValue? value, string? successMessage = null) => new(ResultStatus.Success) { Value = value, SuccessMessage = successMessage };
 
     #endregion
 
@@ -78,6 +74,12 @@ public class Result<TValue> : IResult
         new(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
+        };
+
+    public static Result<TValue> Invalid(params string[] errorMessages) =>
+        new(ResultStatus.Invalid)
+        {
+            ErrorMessages = errorMessages
         };
 
     #endregion
@@ -117,9 +119,7 @@ public class Result : Result<object>
 
     public static Result Success() => new(ResultStatus.Success);
 
-    public new static Result SuccessWithMessage(string successMessage) => new(ResultStatus.Success) { SuccessMessage = successMessage };
-
-    public static Result<TValue?> Success<TValue>(TValue? value) => new(value);
+    public static Result<TValue?> Success<TValue>(TValue? value, string? successMessage = null) => new(ResultStatus.Success, value) { SuccessMessage = successMessage };
 
     #endregion
 
@@ -141,6 +141,12 @@ public class Result : Result<object>
         new(ResultStatus.Invalid)
         {
             ValidationErrors = validationErrors.ToList()
+        };
+
+    public new static Result Invalid(params string[] errorMessages) =>
+        new(ResultStatus.Invalid)
+        {
+            ErrorMessages = errorMessages
         };
 
     #endregion

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.ServiceResult", "src\Optivify.ServiceResult\Optivify.ServiceResult.csproj", "{CD40F8F1-5AE2-4BE8-8E8A-3D3C4B159AE4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.ServiceResult.Tests", "src\Optivify.ServiceResult.Tests\Optivify.ServiceResult.Tests.csproj", "{508A63B9-DD3F-4FFE-8174-6FA1575D24BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD40F8F1-5AE2-4BE8-8E8A-3D3C4B159AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD40F8F1-5AE2-4BE8-8E8A-3D3C4B159AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD40F8F1-5AE2-4BE8-8E8A-3D3C4B159AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD40F8F1-5AE2-4BE8-8E8A-3D3C4B159AE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508A63B9-DD3F-4FFE-8174-6FA1575D24BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508A63B9-DD3F-4FFE-8174-6FA1575D24BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508A63B9-DD3F-4FFE-8174-6FA1575D24BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508A63B9-DD3F-4FFE-8174-6FA1575D24BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6DB11125-703D-47AC-A20D-F01571B26EC2}
+	EndGlobalSection
+EndGlobal

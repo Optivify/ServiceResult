@@ -16,7 +16,7 @@ public class ResultImplicitOperatorTests
     {
         var obj = new TestClass();
         var result = Result.Success(obj);
-        var castObj = this.GetValueExample(result);
+        var castObj = GetValueExample(result);
 
         Assert.AreEqual(ResultStatus.Success, result.Status);
         Assert.AreEqual(obj, castObj);
@@ -33,6 +33,7 @@ public class ResultImplicitOperatorTests
             Severity = ValidationSeverity.Info
         });
 
+        Assert.IsNotNull(result.ValidationErrors);
         Assert.AreEqual(ResultStatus.Invalid, result.Status, "ResultStatus");
         Assert.AreEqual("property", result.ValidationErrors[0].PropertyName);
         Assert.AreEqual("error", result.ValidationErrors[0].ErrorMessage);
@@ -44,7 +45,7 @@ public class ResultImplicitOperatorTests
     public void VerifyImplicitOperator_GivenValue_ReturnCorrectResult()
     {
         var obj = new TestClass();
-        var result = this.PerformExample(obj);
+        var result = PerformExample(obj);
 
         Assert.AreEqual(ResultStatus.Success, result.Status);
         Assert.AreEqual(obj, result.Value);

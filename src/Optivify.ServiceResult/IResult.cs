@@ -2,19 +2,24 @@
 
 public interface IResult
 {
-    bool IsSuccess { get; }
-
-    public bool IsSuccessWithValue { get; }
-
-    public bool IsFailure { get; }
-
     ResultStatus Status { get; }
 
-    string SuccessMessage { get; }
+    bool IsSuccess { get; }
 
-    IEnumerable<string> ErrorMessages { get; }
+    bool IsFailure { get; }
 
-    List<ValidationError> ValidationErrors { get; }
+    string? SuccessMessage { get; }
+
+    string? ErrorMessage { get; }
+
+    List<ValidationError>? ValidationErrors { get; }
 
     object? GetValue();
+}
+
+public interface IResult<out TValue> : IResult
+{
+    TValue? Value { get; }
+
+    TValue? Data => Value;
 }
